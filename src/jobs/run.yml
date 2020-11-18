@@ -41,7 +41,7 @@ steps:
             command: ./gradlew << parameters.command >>
             cache_key: << parameters.cache_key >>
             cache_checksum_file: << parameters.cache_checksum_file >>
- - when:
+  - when:
       condition: <<parameters.persist_to_workspace>>
       steps:
         - persist_to_workspace:
