@@ -21,6 +21,16 @@ parameters:
     description: File to use to generate the cache checksum, defaults to build.gradle.  For example if using Gradle Kotlin DSL then set to build.gradle.kts instead.
     type: string
     default: 'build.gradle'
+  persist_to_workspace:
+    default: false
+    description: >-
+      Whether to persist the persist_to_workspace_root directory to the
+      workspace
+    type: boolean
+  persist_to_workspace_root_dir:
+    default: ~/project
+    description: The directory to persist to the workspace
+    type: string
 steps:
   - checkout
   - with_cache:
@@ -31,3 +41,10 @@ steps:
             command: ./gradlew << parameters.command >>
             cache_key: << parameters.cache_key >>
             cache_checksum_file: << parameters.cache_checksum_file >>
+ - when:
+      condition: <<parameters.persist_to_workspace>>
+      steps:
+        - persist_to_workspace:
+            paths:
+              - .
+            root: <<parameters.persist_to_workspace_root_dir>>
